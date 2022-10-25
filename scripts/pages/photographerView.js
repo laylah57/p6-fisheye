@@ -1,18 +1,17 @@
 class PhotographerView {
   showPhotographerDetails(listData) {
     let totalHtml = '';
-    for(let media  of listData) {
-      totalHtml += this.createPhotographerDetails(media);
-    }
+    totalHtml += this.createPhotographerDetails(listData);
 
-    const photographerDetails = document.querySelector('.photographer_details');
-    photographerDetails.innerHTML = totalHtml;
+    const photographerHeader = document.querySelector('.photographer-info');
+    photographerHeader.innerHTML = totalHtml;
   };
 
-  createPhotographerDetails(media) {
-    let html = `
-   <div>Hi ${media.id}</div>
-  `
-    return html;
+  createPhotographerDetails(photographer) {
+    let htmlHeader  = `
+       <h2>Hi</h2>
+    `
+    console.log(photographer);
+    return htmlHeader;
   }
 }

@@ -20,11 +20,10 @@ class Model {
   getPhotographers() {
    return this.data.photographers;
   };
-  getMedia() {
-    return this.data.media;
-  };
+  getPhotographerById(){
 
-  getPhotographerById() {
-    return this.data.photographers;
+    console.log();
+    return;
   }
 }
+

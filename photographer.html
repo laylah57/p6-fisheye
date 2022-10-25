@@ -13,7 +13,9 @@
     </header>
     <main id="main">
       <div class="photograph-header">
+        <div class="photographer-info"></div>
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+        <div class="image-wrapper"></div>
       </div>
       <div class="photographer_details"></div>
     </main>
@@ -37,9 +39,9 @@
     <script src="/scripts/pages/model.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
     <script>
-      let controller = new Controller;
+        let controller = new Controller;
 
-      controller.displayPhotographerDetails();
+        controller.displayPhotographerDetails();
     </script>
   </body>
 </html>
