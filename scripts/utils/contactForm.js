@@ -1,11 +1,20 @@
 function displayModal() {
     const modal = document.getElementById("contact_modal");
-	modal.style.display = "block";
+    modal.style.display = "block";
 }
 
 function closeModal() {
     const modal = document.getElementById("contact_modal");
     modal.style.display = "none";
+}
+
+const lightbox = document.getElementById('lightbox_modal');
+
+function displayLightbox() {
+  lightbox.style.display = "block";
+}
+function closeLightbox() {
+  lightbox.style.display = "none";
 }
 
 

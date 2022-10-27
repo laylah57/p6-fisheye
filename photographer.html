@@ -21,9 +21,12 @@
     </main>
     <div id="contact_modal">
 			<div class="modal">
-				<header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
+				<header id="modal_header">
+          <div class="modal_title">
+            <h2>Contactez-moi</h2>
+            <img src="assets/icons/close.svg" onclick="closeModal()" />
+          </div>
+          <h3></h3>
         </header>
 				<form id="form">
 					<div class="form-input">
@@ -57,6 +60,18 @@
 				</form>
 			</div>
 		</div>
+    <div id="lightbox_modal">
+      <div class="lightbox">
+        <header>
+          <img src="assets/icons/close.svg" onclick="closeLightbox()" />
+        </header>
+        <div class="lightbox_content">
+          <img src="assets/icons/chevron-left-solid.svg" />
+          <div class="lightbox_image"></div>
+          <img src="assets/icons/chevron-right-solid.svg" />
+        </div>
+      </div>
+    </div>
     <div id="validation" class="validation-message">
       <div class="content">
         <p>Merci pour votre message, nous l'avons communiqué à l'artiste</p>

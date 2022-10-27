@@ -3,12 +3,15 @@ class PhotographerView {
     let headerInfo = '';
     let headerImage = '';
     let imageSection = '';
+    let modalContact = photographerDetails.name;
+    let lightboxDisplay = '';
 
-    headerInfo += this.createPhotographerDetails(photographerDetails)[0]
+    headerInfo += this.createPhotographerDetails(photographerDetails)[0];
     headerImage += this.createPhotographerDetails(photographerDetails)[1];
 
     for(let media of photographerMedia) {
       imageSection += this.createPhotographerMedia(media);
+      lightboxDisplay += this.createLightboxDisplay(media);
       this.createMediaTag(media);
     }
 
@@ -18,6 +21,11 @@ class PhotographerView {
     photographerHeaderImage.innerHTML = headerImage;
     const photographerMediaSlot = document.querySelector('.photographer_details');
     photographerMediaSlot.innerHTML = imageSection;
+    const modalHeader = document.querySelector('h3');
+    modalHeader.innerHTML = modalContact;
+    const lightboxImage = document.querySelector('.lightbox_image');
+    lightboxImage.innerHTML = lightboxDisplay;
+
   };
 
   createPhotographerDetails(photographer) {
@@ -34,6 +42,7 @@ class PhotographerView {
       </div>
     `
     let headerImage = `<img class=""src="assets/photographers/${photographer.portrait}"/>`
+
     return [headerInfo, headerImage];
   }
 
@@ -41,9 +50,11 @@ class PhotographerView {
     let mediaAsset = this.createMediaTag(media);
     let imageSlot= `
       <div class="image-slot">
-        <div class="photographer-image">
-          ${mediaAsset}
-        </div>
+        <a onclick="displayLightbox()">
+          <div class="photographer-image">
+            ${mediaAsset}
+          </div>  
+        </a>
         <div class="media-caption">
           <div class="media-title">${media.title}</div>
           <div class="media-likes">
@@ -67,5 +78,12 @@ class PhotographerView {
     }
 
     return mediaHtml;
+  }
+
+  createLightboxDisplay(media) {
+    let mediaElements = this.createMediaTag(media);
+    console.log(mediaElements);
+    let lightboxDisplay = mediaElements;
+    return lightboxDisplay;
   }
 }

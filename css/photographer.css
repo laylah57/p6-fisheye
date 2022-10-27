@@ -34,6 +34,7 @@
     margin: 0 100px;
     padding: 50px 0;
 }
+
 .image-slot {
     display: flex;
     flex-direction: column;
@@ -108,7 +109,7 @@
     background-color: rgba(144, 28, 28, 0.5);
 }
 
-#contact_modal {
+#contact_modal, #lightbox_modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -116,12 +117,14 @@
     width: 100vw;
     z-index: 1;
     background-color: rgba(255, 255, 255, 0.7);
+    display: none;
 }
 
 .modal {
     border-radius: 5px;
     background-color: #DB8876;
     width: 40%;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -131,8 +134,11 @@
 }
 
 .modal header {
-    justify-content: space-between;
+    flex-direction: column;
+    height: fit-content;
+    align-items: start;
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .modal header img {
@@ -141,10 +147,17 @@
     width: 36px;
 }
 
-.modal header h2 {
+.modal_title  {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.modal header h2, h3  {
     font-size: 50px;
     font-weight: normal;
-    text-align: center;
+    margin: 0;
 }
 
 form {
@@ -164,7 +177,7 @@ form div {
     flex-direction: column;
     width: 100%;
     align-items: self-start;
-    margin-bottom: 26px;
+    margin-bottom: 10px;
 }
 
 form input, textarea {
@@ -175,16 +188,16 @@ form input, textarea {
     border: none;
     border-radius: 5px;
 }
+
 textarea {
     height: 134px;
 }
+
 .form-input[data-error]::after {
     content: attr(data-error);
     font-size: 15px;
     color: #e54858;
     display: block;
-    margin-top: 7px;
-    margin-bottom: 7px;
     text-align: start;
     line-height: 1;
     opacity: 0;
@@ -215,7 +228,7 @@ input:focus-visible {
     width: 100vw;
     z-index: 1;
     background-color: rgba(255, 255, 255, 0.7);
-    display: flex;
+    display: none;
 }
 
 .content {
@@ -231,4 +244,54 @@ input:focus-visible {
     flex-direction:  column;
     border-radius: 5px;
     background-color: #DB8876;
+}
+
+.lightbox {
+    background-color: transparent;
+    display: flex;
+    margin: auto;
+    height: 90vh;
+    width: 60vw;
+    flex-direction: column;
+}
+
+.lightbox header {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
+
+.lightbox header img {
+    height: 30px;
+    width: 30px;
+    background-color: #901C1C;
+}
+
+.lightbox > .lightbox_content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+}
+
+.lightbox_content > img {
+    background-color: transparent;
+    height: 40px;
+    width: 40px;
+    padding: 0 10px;
+}
+
+.lightbox_image {
+    border-radius: 5px;
+    background-color: white;
+    padding: 10px;
+}
+
+.lightbox_image > img {
+    max-height: 90vh;
+    max-width: 60vw;
+    object-fit: cover;
+    object-position: top;
 }
