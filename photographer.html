@@ -12,7 +12,7 @@
       <a href="index.html"><img src="assets/images/logo.png" class="logo" /></a>
     </header>
     <main id="main">
-      <div class="photograph-header">
+      <div class="photographer-header">
         <div class="photographer-info"></div>
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
         <div class="image-wrapper"></div>
@@ -25,15 +25,50 @@
           <h2>Contactez-moi</h2>
           <img src="assets/icons/close.svg" onclick="closeModal()" />
         </header>
-				<form>
-					<div>
+				<form id="form">
+					<div class="form-input">
 						<label>Prénom</label>
-						<input />
+						<input id="firstName"/>
 					</div>
-          <button class="contact_button">Envoyer</button>
+          <div class="form-input">
+            <label>Nom</label>
+            <input id="lastName"/>
+          </div>
+          <div class="form-input">
+            <label>Email</label>
+            <input id="email"/>
+          </div>
+          <div class="form-input">
+            <label>Votre message</label>
+            <textarea
+              id="textInput"
+              rows="6"
+              col="50"
+            ></textarea>
+          </div>
+          <button
+            id="submit-button"
+            class="contact_button"
+            type="submit"
+            disabled
+          >
+            Envoyer
+          </button>
 				</form>
 			</div>
 		</div>
+    <div id="validation" class="validation-message">
+      <div class="content">
+        <p>Merci pour votre message, nous l'avons communiqué à l'artiste</p>
+        <button
+          id="backToMenu"
+          class="contact_button"
+          type="button"
+        >
+          Retour à la page
+        </button>
+      </div>
+    </div>
     <script src="/scripts/pages/photographerView.js"></script>
     <script src="/scripts/pages/controller.js"></script>
     <script src="/scripts/pages/model.js"></script>

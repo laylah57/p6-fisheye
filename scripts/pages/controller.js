@@ -12,9 +12,9 @@ class Controller {
     let model = new Model()
     let photographerView = new PhotographerView();
     await model.initData();
-    let photographerData = model.getPhotographers();
+    let photographerDetails = model.getPhotographerDetails();
+    let photographerMedia = model.getPhotographerMedia();
 
-    photographerView.showPhotographerDetails(photographerData);
+    photographerView.showPhotographerDetails(photographerDetails, photographerMedia);
   }
-  // async displayPhotographerDetails() + getPhotographerById + let view = newView (dans index.js / details.js)// index.vue // details.vue
 }

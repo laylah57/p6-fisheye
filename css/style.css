@@ -44,7 +44,7 @@ h1 {
   margin-bottom: 0;
 }
 
-.photographer_section article .image-wrapper {
+.image-wrapper {
   height: 200px;
   width: 200px;
   display: flex;
@@ -63,10 +63,15 @@ h1 {
 }
 
 .price {
- font-size: 11px;
+  font-size: 11px;
   color: #757575;
 }
 
 .tagline {
   font-size: 12px;
+}
+
+.stretched-link {
+  text-decoration: none;
+  color: black;
 }

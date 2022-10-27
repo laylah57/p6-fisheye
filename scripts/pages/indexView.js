@@ -1,10 +1,8 @@
 class View {
-  showPhotographers(listPhotographers) {
+  showPhotographers(listPhotographers, photographerMedia) {
     let totalHtml = '';
     for(let photographer of listPhotographers) {
       totalHtml += this.showPhotographer(photographer);
-      console.log(photographer);
-      this.getPhotographerId(photographer);
     }
     const photographerSection = document.querySelector('.photographer_section');
     photographerSection.innerHTML = totalHtml;
@@ -14,7 +12,7 @@ class View {
   showPhotographer(photographer) {
     let html = `
     <!--TODO : onclick + redirect to corresponding page -->
-    <a href="photographer.html?id=${photographer.id}">
+    <a href="photographer.html?id=${photographer.id}" class="stretched-link">
       <article>
           <div class="image-wrapper">
             <img alt="Portrait du photographer" src="/assets/photographers/${photographer.portrait}" />
