@@ -268,15 +268,25 @@ input:focus-visible {
 }
 
 .lightbox > .lightbox_content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
     background-color: transparent;
     height: 100%;
     width: 100%;
+    position: relative;
 }
 
-.lightbox_content > img {
+.lightbox_element {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: auto;
+}
+
+.lightbox_element > img {
     background-color: transparent;
     height: 40px;
     width: 40px;

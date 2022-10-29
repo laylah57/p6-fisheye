@@ -9,9 +9,10 @@ class PhotographerView {
     headerInfo += this.createPhotographerDetails(photographerDetails)[0];
     headerImage += this.createPhotographerDetails(photographerDetails)[1];
 
+    lightboxDisplay += this.createLightboxDisplay(photographerMedia);
+
     for(let media of photographerMedia) {
       imageSection += this.createPhotographerMedia(media);
-      lightboxDisplay += this.createLightboxDisplay(media);
       this.createMediaTag(media);
     }
 
@@ -23,7 +24,7 @@ class PhotographerView {
     photographerMediaSlot.innerHTML = imageSection;
     const modalHeader = document.querySelector('h3');
     modalHeader.innerHTML = modalContact;
-    const lightboxImage = document.querySelector('.lightbox_image');
+    const lightboxImage = document.querySelector('.lightbox_content');
     lightboxImage.innerHTML = lightboxDisplay;
 
   };
@@ -48,9 +49,10 @@ class PhotographerView {
 
   createPhotographerMedia(media) {
     let mediaAsset = this.createMediaTag(media);
+    let mediaId = media.id;
     let imageSlot= `
       <div class="image-slot">
-        <a onclick="displayLightbox()">
+        <a onclick="displayLightbox(${mediaId})">
           <div class="photographer-image">
             ${mediaAsset}
           </div>  
@@ -81,9 +83,22 @@ class PhotographerView {
   }
 
   createLightboxDisplay(media) {
-    let mediaElements = this.createMediaTag(media);
-    console.log(mediaElements);
-    let lightboxDisplay = mediaElements;
-    return lightboxDisplay;
+    let lightboxHtml = [''];
+
+    for(let mediaElement of media) {
+      let lightboxElement = `
+        <div class="lightbox_content">
+          <div class="lightbox_element" id="${mediaElement.id}">
+            <img src="assets/icons/chevron-left-solid.svg"/>
+            <div class="lightbox_image">
+              <img src="assets/images/${mediaElement.image}">
+            </div>
+            <img src="assets/icons/chevron-right-solid.svg"/>
+          </div>
+        </div>
+      `
+      lightboxHtml.push(lightboxElement);
+    }
+    return lightboxHtml;
   }
 }

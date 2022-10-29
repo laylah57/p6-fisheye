@@ -10,11 +10,23 @@ function closeModal() {
 
 const lightbox = document.getElementById('lightbox_modal');
 
-function displayLightbox() {
+function displayLightbox(mediaId) {
+  console.log(mediaId);
   lightbox.style.display = "block";
+  let lightboxImage = document.getElementById(mediaId);
+  console.log(lightboxImage);
+  lightboxImage.setAttribute("style", "display:flex");
+  console.log(mediaId)
+  return mediaId
 }
+
+
 function closeLightbox() {
+  let mediaElement = displayLightbox();
+  console.log(mediaElement)
   lightbox.style.display = "none";
+  let lightboxImage = document.querySelector('.lightbox_element');
+  console.log(lightboxImage);
 }
 
 
