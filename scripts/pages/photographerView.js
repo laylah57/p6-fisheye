@@ -1,36 +1,34 @@
 class PhotographerView {
   showPhotographerDetails(photographerDetails, photographerMedia) {
-    let headerInfo = '';
-    let headerImage = '';
-    let imageSection = '';
-    let modalContact = photographerDetails.name;
-    let lightboxDisplay = '';
+    let htmlContent = this.createPhotographerView(photographerDetails, photographerMedia);
 
-    headerInfo += this.createPhotographerDetails(photographerDetails)[0];
-    headerImage += this.createPhotographerDetails(photographerDetails)[1];
+    const htmlHeaderInfo = document.querySelector('.photographer_info');
+    htmlHeaderInfo.innerHTML = htmlContent.headerInfo;
 
-    lightboxDisplay += this.createLightboxDisplay(photographerMedia);
+    const htmlHeaderThumbnail = document.querySelector('.photographer_thumbnail');
+    htmlHeaderThumbnail.innerHTML = htmlContent.headerThumbnail;
 
-    for(let media of photographerMedia) {
-      imageSection += this.createPhotographerMedia(media);
-      this.createMediaTag(media);
+    // TODO: see if I can return this directly from the function
+    // Creating variable to store each element of the mediaCards table
+    let mediaCard = '';
+
+    for (let element of htmlContent.mediaCards) {
+      mediaCard += element;
     }
 
-    const photographerHeader = document.querySelector('.photographer-info');
-    photographerHeader.innerHTML = headerInfo ;
-    const photographerHeaderImage = document.querySelector('.image-wrapper');
-    photographerHeaderImage.innerHTML = headerImage;
-    const photographerMediaSlot = document.querySelector('.photographer_details');
-    photographerMediaSlot.innerHTML = imageSection;
-    const modalHeader = document.querySelector('h3');
-    modalHeader.innerHTML = modalContact;
-    const lightboxImage = document.querySelector('.lightbox_content');
-    lightboxImage.innerHTML = lightboxDisplay;
+    const htmlMediaCards = document.querySelector('.photographer_art_pieces');
+    htmlMediaCards.innerHTML = mediaCard;
 
-  };
+    const htmlLightboxContent = document.querySelector('.lightbox_content');
+    // let lightbox = new Lightbox;
+    // lightbox.init(add event listener on existing media);
+    console.log(htmlLightboxContent);
+    htmlLightboxContent.innerHTML = htmlContent.lightboxDisplay.join('');
+  }
 
-  createPhotographerDetails(photographer) {
-    let headerInfo  = `
+  createPhotographerView(photographer, media) {
+    // Creating header photographer info and image thumbnail:
+    let htmlHeaderInfo = `
        <h1>${photographer.name}</h1>
        <p class="location">${photographer.city}, ${photographer.country}</p>
        <p class="tagline">${photographer.tagline}</p>
@@ -38,67 +36,90 @@ class PhotographerView {
         <div class="media-likes">
           <span></span>
           <span class="heart"></span>
-        </div> 
+        </div>
          <div>${photographer.price}€ / jour</div>
       </div>
-    `
-    let headerImage = `<img class=""src="assets/photographers/${photographer.portrait}"/>`
+    `;
+    let htmlHeaderThumbnail = `<img class="" src="assets/photographers/${photographer.portrait}"/>`;
 
-    return [headerInfo, headerImage];
-  }
+    // Creating image and video cards (mediaCard) by looping through media data
+    // Creating variable to fill in with loop return values
+    let htmlMediaCards = [];
+    let htmlLightboxDisplay = [];
 
-  createPhotographerMedia(media) {
-    let mediaAsset = this.createMediaTag(media);
-    let mediaId = media.id;
-    let imageSlot= `
-      <div class="image-slot">
-        <a onclick="displayLightbox(${mediaId})">
-          <div class="photographer-image">
-            ${mediaAsset}
-          </div>  
-        </a>
-        <div class="media-caption">
-          <div class="media-title">${media.title}</div>
-          <div class="media-likes">
-            <span>${media.likes}</span>
-            <span class="heart"></span>
-          </div>
-        </div>
-      </div>
-    `
-    return imageSlot;
-  }
+    // Looping through the elements
+    for (let element of media) {
 
-  createMediaTag(media) {
-    let mediaHtml= '';
-    let mediaType = String(Object.keys(media).filter(mediaType => mediaType === 'video' || mediaType === 'image'));
+      // Declaring a variable to discriminate between video and image elements
+      let mediaAsset = String(Object.keys(element).filter(mediaAsset => mediaAsset === 'video' || mediaAsset === 'image'));
 
-    if(mediaType === 'image') {
-      mediaHtml = `<img class="image-art" src="assets/images/${media.image}"/>`
-    } else {
-      mediaHtml = `<video class="image-art" type="video/mp4" src="assets/images/${media.video}"/>`
-    }
+      // Creating the variable to store results of the following if condition
+      let mediaHtml = '';
 
-    return mediaHtml;
-  }
+      // Condition to create either an <img> or <video> element
+      if (mediaAsset === 'image') {
+        mediaHtml = `
+          <img
+            id="media_element_${element.id}"
+            class="media_element"
+            data-media-id="${element.id}"
+            src="assets/images/${element.image}"
+          />
+        `
+      } else {
+        mediaHtml = `
+          <video
+            id="media_element_${element.id}"
+            class="media_element"
+            data-media-id="${element.id}"
+            src="assets/images/${element.video}"
+            type="video/mp4"
+          />
+        `
+      }
 
-  createLightboxDisplay(media) {
-    let lightboxHtml = [''];
-
-    for(let mediaElement of media) {
-      let lightboxElement = `
-        <div class="lightbox_content">
-          <div class="lightbox_element" id="${mediaElement.id}">
-            <img src="assets/icons/chevron-left-solid.svg"/>
-            <div class="lightbox_image">
-              <img src="assets/images/${mediaElement.image}">
+      // Creating the html for the media cards
+      let htmlMediaCard = `
+        <div class="image-slot">
+          <a onclick="displayLightbox(${element.id})"> <!--// TODO: let lightbox new Lightbox...-->
+            <div class="photographer-image">
+              ${mediaHtml}
             </div>
-            <img src="assets/icons/chevron-right-solid.svg"/>
+          </a>
+          <div class="media-caption">
+            <div class="media-title">${element.title}</div>
+            <div class="media-likes">
+              <span>${element.likes}</span>
+              <span class="heart"></span>
+            </div>
           </div>
         </div>
       `
-      lightboxHtml.push(lightboxElement);
+      // Storing the media elements in a table
+      htmlMediaCards.push(htmlMediaCard);
+
+      // Creating lightbox display
+      let htmlLightboxElement = `
+          <div id="lightbox_media_${element.id}" class="lightbox_element">
+            <img id="arrow_previous_${element.id}" src="assets/icons/chevron-left-solid.svg" />
+              <div class="lightbox_image">
+                ${mediaHtml}
+              </div>
+            <img id="arrow_next_${element.id}" src="assets/icons/chevron-right-solid.svg" />
+          </div>
+      `
+      htmlLightboxDisplay.push(htmlLightboxElement);
     }
-    return lightboxHtml;
+
+    // Declare variable to store the entire HTML content to pass on to main class function
+    let totalHtml = {
+      headerInfo : htmlHeaderInfo,
+      headerThumbnail : htmlHeaderThumbnail,
+      mediaCards : htmlMediaCards,
+      lightboxDisplay: htmlLightboxDisplay,
+    };
+
+    // Returning total HTML result
+    return totalHtml;
   }
 }

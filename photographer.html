@@ -7,17 +7,20 @@
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
     <title>Fisheye - photographe</title>
   </head>
-  <body>
+  <body id="body" class="dark_mode">
     <header>
       <a href="index.html"><img src="assets/images/logo.png" class="logo" /></a>
+      <button id="switch_display" class="contact_button">
+        Toggle me
+      </button>
     </header>
     <main id="main">
       <div class="photographer-header">
-        <div class="photographer-info"></div>
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-        <div class="image-wrapper"></div>
+        <div class="photographer_info"></div>
+        <button class="contact_button" onclick="displayModal(), console.log('hi')">Contactez-moi</button>
+        <div class="photographer_thumbnail"></div>
       </div>
-      <div class="photographer_details"></div>
+      <div class="photographer_art_pieces"></div>
     </main>
     <div id="contact_modal">
 			<div class="modal">
@@ -63,10 +66,9 @@
     <div id="lightbox_modal">
       <div class="lightbox">
         <header>
-          <img src="assets/icons/close.svg" onclick="closeLightbox()" />
+          <img id="close_button" src="assets/icons/close.svg" />
         </header>
-        <div class="lightbox_content">
-        </div>
+        <div class="lightbox_content"></div>
       </div>
     </div>
     <div id="validation" class="validation-message">
@@ -85,10 +87,26 @@
     <script src="/scripts/pages/controller.js"></script>
     <script src="/scripts/pages/model.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
+    <script src="/scripts/utils/Lightbox.js"></script>
     <script>
         let controller = new Controller;
 
         controller.displayPhotographerDetails();
+        const toggleMode = this.document.getElementById('switch_display');
+        const body = this.document.getElementById('body');
+        toggleMode.addEventListener('click', () => {
+          changeDisplayMode();
+        });
+
+        function changeDisplayMode() {
+          let currentDisplay = body.getAttribute('class');
+          console.log(currentDisplay);
+          if (null === currentDisplay) {
+            body.setAttribute('class', 'dark_mode');
+          } else {
+            body.removeAttribute('class');
+          }
+        }
     </script>
   </body>
 </html>

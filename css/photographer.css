@@ -12,22 +12,22 @@
     padding: 50px;
 }
 
-.photographer-info > h1 {
+.photographer_info > h1 {
     color: #d3573c;
     font-size: 64px;
     margin: 0;
 }
 
-.photographer-info > .location {
+.photographer_info > .location {
     font-size: 24px;
     margin: 16px 0;
 }
 
-.photographer-info > .tagline {
+.photographer_info > .tagline {
     font-size : 18px;
 }
 
-.photographer_details {
+.photographer_art_pieces {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 70px;
@@ -49,7 +49,7 @@
     border-radius: 5px;
 }
 
-.image-art {
+.media_element {
     width: 100%;
     height: auto;
     object-fit: cover;
@@ -248,7 +248,7 @@ input:focus-visible {
 
 .lightbox {
     background-color: transparent;
-    display: flex;
+    display: none;
     margin: auto;
     height: 90vh;
     width: 60vw;
@@ -268,7 +268,7 @@ input:focus-visible {
 }
 
 .lightbox > .lightbox_content {
-    display: none;
+    display: flex;
     background-color: transparent;
     height: 100%;
     width: 100%;
@@ -276,6 +276,7 @@ input:focus-visible {
 }
 
 .lightbox_element {
+    display: none;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -304,4 +305,8 @@ input:focus-visible {
     max-width: 60vw;
     object-fit: cover;
     object-position: top;
+}
+
+.dark_mode {
+    background-color: #312E2E;
 }

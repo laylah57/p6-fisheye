@@ -21,26 +21,27 @@ class Model {
    return this.data.photographers;
   };
 
+  // TODO: rename by PhotographerId. No. Delete completely.
   getPhotographerById() {
-    let params = new URLSearchParams(document.location.search);
+    let params = new URLSearchParams(document.location.search); // TODO: send this to Controller and give id to getPhotographersDetails.
 
     return Number(params.get("id"));
   }
 
-  getPhotographerDetails() {
+  getPhotographerDetails() { //TODO: this function is what getPhotographerById was supposed to do
     // TODO: refactor with .filter()
     let currentPhotographerId = this.getPhotographerById();
     let photographerList = this.data.photographers;
     // let currentPhotographer = photographerList.filter((currentPhotographer) => currentPhotographer.id == currentPhotographerId);
     let idList = photographerList.map(element => element.id);
-    let currentPhotographer = idList.findIndex(element => element === currentPhotographerId);
-    let currentPhotographerDetails = photographerList[currentPhotographer];
+    let currentPhotographerIndex = idList.findIndex(element => element === currentPhotographerId);
+    let currentPhotographerDetails = photographerList[currentPhotographerIndex];
     return currentPhotographerDetails;
   }
 
-  getPhotographerMedia() {
+  getPhotographerMedia() { // TODO: pass the id through controller
     let mediaList = this.data.media;
-    let currentPhotographer = this.getPhotographerById();
+    let currentPhotographer = this.getPhotographerById(); // TODO: rename currentPhotographer and getPhotographerById
     return mediaList.filter((mediaAuthor) => mediaAuthor.photographerId === currentPhotographer);
   }
 }

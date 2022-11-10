@@ -1,5 +1,5 @@
 class View {
-  showPhotographers(listPhotographers, photographerMedia) {
+  showPhotographers(listPhotographers) {
     let totalHtml = '';
     for(let photographer of listPhotographers) {
       totalHtml += this.showPhotographer(photographer);
@@ -14,7 +14,7 @@ class View {
     <!--TODO : onclick + redirect to corresponding page -->
     <a href="photographer.html?id=${photographer.id}" class="stretched-link">
       <article>
-          <div class="image-wrapper">
+          <div class="photographer_thumbnail">
             <img alt="Portrait du photographer" src="/assets/photographers/${photographer.portrait}" />
           </div>
           <h2>${photographer.name}</h2>
