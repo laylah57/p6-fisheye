@@ -281,13 +281,21 @@ input:focus-visible {
     align-items: center;
     width: 100%;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
     margin: auto;
 }
 
-.lightbox_element > img {
+.lightbox_content {
+    width: 100%;
+    display: flex;
+    height: auto;
+}
+
+.lightbox_content_wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.lightbox_content_wrapper > img {
     background-color: transparent;
     height: 40px;
     width: 40px;
@@ -298,6 +306,7 @@ input:focus-visible {
     border-radius: 5px;
     background-color: white;
     padding: 10px;
+    width: 100%;
 }
 
 .lightbox_image > img {

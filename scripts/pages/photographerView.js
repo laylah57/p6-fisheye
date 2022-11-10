@@ -81,7 +81,7 @@ class PhotographerView {
       // Creating the html for the media cards
       let htmlMediaCard = `
         <div class="image-slot">
-          <a onclick="displayLightbox(${element.id})"> <!--// TODO: let lightbox new Lightbox...-->
+          <a onclick="createLightbox(${element.id})"> <!--// TODO: let lightbox new Lightbox...-->
             <div class="photographer-image">
               ${mediaHtml}
             </div>
@@ -101,11 +101,9 @@ class PhotographerView {
       // Creating lightbox display
       let htmlLightboxElement = `
           <div id="lightbox_media_${element.id}" class="lightbox_element">
-            <img id="arrow_previous_${element.id}" src="assets/icons/chevron-left-solid.svg" />
               <div class="lightbox_image">
                 ${mediaHtml}
               </div>
-            <img id="arrow_next_${element.id}" src="assets/icons/chevron-right-solid.svg" />
           </div>
       `
       htmlLightboxDisplay.push(htmlLightboxElement);
