@@ -17,7 +17,7 @@
     <main id="main">
       <div class="photographer-header">
         <div class="photographer_info"></div>
-        <button class="contact_button" onclick="displayModal(), console.log('hi')">Contactez-moi</button>
+        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
         <div class="photographer_thumbnail"></div>
       </div>
       <div class="photographer_art_pieces"></div>
@@ -69,9 +69,13 @@
           <img id="close_button" src="assets/icons/close.svg" />
         </header>
         <div class="lightbox_content_wrapper">
-          <img id="arrow_previous" src="assets/icons/chevron-left-solid.svg" type="button" />
+          <div id="arrow_previous">
+            <img src="assets/icons/chevron-left-solid.svg" />
+          </div>
           <div class="lightbox_content"></div>
-          <img id="arrow_next" src="assets/icons/chevron-right-solid.svg" />
+          <div id="arrow_next">
+            <img src="assets/icons/chevron-right-solid.svg" />
+          </div>
         </div>
       </div>
     </div>

@@ -22,8 +22,9 @@ class PhotographerView {
     const htmlLightboxContent = document.querySelector('.lightbox_content');
     // let lightbox = new Lightbox;
     // lightbox.init(add event listener on existing media);
-    console.log(htmlLightboxContent);
     htmlLightboxContent.innerHTML = htmlContent.lightboxDisplay.join('');
+
+    this.incrementLikesCount();
   }
 
   createPhotographerView(photographer, media) {
@@ -34,12 +35,13 @@ class PhotographerView {
        <p class="tagline">${photographer.tagline}</p>
        <div class="price-info">
         <div class="media-likes">
-          <span></span>
+          <span id="total_likes_number"></span>
           <span class="heart"></span>
         </div>
          <div>${photographer.price}€ / jour</div>
       </div>
     `;
+
     let htmlHeaderThumbnail = `<img class="" src="assets/photographers/${photographer.portrait}"/>`;
 
     // Creating image and video cards (mediaCard) by looping through media data
@@ -89,8 +91,8 @@ class PhotographerView {
           <div class="media-caption">
             <div class="media-title">${element.title}</div>
             <div class="media-likes">
-              <span>${element.likes}</span>
-              <span class="heart"></span>
+              <span id="likes_number_${element.id}" data-likes-id="${element.id}" class="likes">${element.likes}</span>
+              <span id="heart" class="heart"></span>
             </div>
           </div>
         </div>
@@ -120,4 +122,47 @@ class PhotographerView {
     // Returning total HTML result
     return totalHtml;
   }
+
+  incrementLikesCount() {
+    // Getting all the likes elements
+    let likesNodesList = document.querySelectorAll('.likes');
+    console.log(likesNodesList);
+    let likesNumberList = [];
+    let totalLikesNumber = Number;
+    for(let nodeElement of likesNodesList) {
+      nodeElement.addEventListener('click', () => {
+        // Storing the return values of the function used to get the selected node's id and text content
+        let likesInformation = this.returnContent(nodeElement); // returns an object with node's id and text content
+        // Replacing the node element content with the return value of the increment function
+        nodeElement.innerHTML = this.incrementNumber(likesInformation.selectedLikesNumber);
+      })
+      // Storing each likes value in a table
+      let likesNumber = Number(nodeElement.textContent);
+      likesNumberList.push(likesNumber);
+      totalLikesNumber = likesNumberList.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+      );
+    }
+    let totalLikesHtmlDisplay = document.getElementById('total_likes_number');
+    return totalLikesHtmlDisplay.innerHTML = totalLikesNumber.toString();
+  }
+
+  incrementNumber(likesNumber) {
+    likesNumber ++;
+    return likesNumber;
+  }
+
+  returnContent(nodeElement) {
+    // Extracting the nodes dataset value to get the element's id
+    let selectedLikesNodeDatasetValue = nodeElement.dataset.likesId;
+    // Extracting the node's content to get likes number
+    let selectedLikesNumber = nodeElement.textContent;
+
+    // Storing the information in an object
+    return {
+      selectedLikesNodeId: selectedLikesNodeDatasetValue,
+      selectedLikesNumber: selectedLikesNumber,
+    };
+  }
 }
+

@@ -20,23 +20,25 @@ function createLightbox(idSelectedMedia) {
 
   // Getting the selected media's Index
   // let elementIndexNumber = listMediaId.findIndex(element => element == idSelectedMedia);
-  let i = 0;
+  let i = listMediaId.findIndex(i => i == idSelectedMedia);
   console.log(i);
 
-  this.displayMediaElement(listMediaId[i]);
+  this.displayMediaElement(listMediaId[i], i, listMediaId.length);
 
   let arrowNext = this.document.getElementById(`arrow_next`);
+  let arrowPrevious = this.document.getElementById(`arrow_previous`);
+
   arrowNext.addEventListener('click',()=> {
     hideElements();
     i++;
-    displayMediaElement(listMediaId[i]);
+    displayMediaElement(listMediaId[i], i, listMediaId.length);
   });
 
-  let arrowPrevious = this.document.getElementById(`arrow_previous`);
+
   arrowPrevious.addEventListener('click',()=> {
     hideElements();
     i--;
-    displayMediaElement(listMediaId[i]);
+    displayMediaElement(listMediaId[i], i, listMediaId.length);
   });
 
 
@@ -52,13 +54,25 @@ function displayLightbox() {
   lightbox.setAttribute("style", "display:flex");
 }
 
-function displayMediaElement(elementIdNumber) {
+function displayMediaElement(elementIdNumber, elementIndexNumber, arrayLength) {
   // Fetching the element to display by its id
   let elementToDisplay = document.getElementById(`lightbox_media_${elementIdNumber}`);
   // Making it visible
   elementToDisplay.setAttribute("style", "display:flex");
+
+  let arrowNext = this.document.getElementById(`arrow_next`);
+  let arrowPrevious = this.document.getElementById(`arrow_previous`);
+
+  // TODO: think about replacing this with switch/case loop ?
+  if (0 === elementIndexNumber) {
+    arrowPrevious.setAttribute('style', 'display:none');
+  } else if (arrayLength - 1 === elementIndexNumber) {
+    arrowNext.setAttribute('style', 'display:none');
+  } else if (0 < elementIndexNumber && arrayLength - 1 !== elementIndexNumber) {
+    arrowPrevious.removeAttribute('style');
+    arrowNext.removeAttribute('style');
+  }
 }
-//
 
 //
 //   // Storing the element to display in a variable
