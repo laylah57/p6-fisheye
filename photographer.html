@@ -7,31 +7,114 @@
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
     <title>Fisheye - photographe</title>
   </head>
-  <body>
+  <body id="body" class="dark_mode">
     <header>
-      <img src="assets/images/logo.png" class="logo" />
+      <a href="index.html"><img src="assets/images/logo.png" class="logo" /></a>
+      <button id="switch_display" class="contact_button">
+        Toggle me
+      </button>
     </header>
     <main id="main">
-      <div class="photograph-header">
+      <div class="photographer-header">
+        <div class="photographer_info"></div>
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+        <div class="photographer_thumbnail"></div>
       </div>
+      <div class="photographer_art_pieces"></div>
     </main>
     <div id="contact_modal">
 			<div class="modal">
-				<header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
+				<header id="modal_header">
+          <div class="modal_title">
+            <h2>Contactez-moi</h2>
+            <img src="assets/icons/close.svg" onclick="closeModal()" />
+          </div>
+          <h3></h3>
         </header>
-				<form>
-					<div>
+				<form id="form">
+					<div class="form-input">
 						<label>Prénom</label>
-						<input />
+						<input id="firstName"/>
 					</div>
-          <button class="contact_button">Envoyer</button>
+          <div class="form-input">
+            <label>Nom</label>
+            <input id="lastName"/>
+          </div>
+          <div class="form-input">
+            <label>Email</label>
+            <input id="email"/>
+          </div>
+          <div class="form-input">
+            <label>Votre message</label>
+            <textarea
+              id="textInput"
+              rows="6"
+              col="50"
+            ></textarea>
+          </div>
+          <button
+            id="submit-button"
+            class="contact_button"
+            type="submit"
+            disabled
+          >
+            Envoyer
+          </button>
 				</form>
 			</div>
 		</div>
-    <script src="/scripts/pages/photographer.js"></script>
+    <div id="lightbox_modal">
+      <div class="lightbox">
+        <header>
+          <img id="close_button" src="assets/icons/close.svg" />
+        </header>
+        <div class="lightbox_content_wrapper">
+          <div id="arrow_previous">
+            <img src="assets/icons/chevron-left-solid.svg" />
+          </div>
+          <div class="lightbox_content"></div>
+          <div id="arrow_next">
+            <img src="assets/icons/chevron-right-solid.svg" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="validation" class="validation-message">
+      <div class="content">
+        <p>Merci pour votre message, nous l'avons communiqué à l'artiste</p>
+        <button
+          id="backToMenu"
+          class="contact_button"
+          type="button"
+        >
+          Retour à la page
+        </button>
+      </div>
+    </div>
+    <script src="/scripts/pages/photographerView.js"></script>
+    <script src="/scripts/pages/controller.js"></script>
+    <script src="/scripts/pages/model.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
+    <script src="/scripts/utils/Lightbox.js"></script>
+    <script>
+        let controller = new Controller;
+
+        controller.displayPhotographerDetails();
+        const toggleMode = this.document.getElementById('switch_display');
+        const body = this.document.getElementById('body');
+        toggleMode.addEventListener('click', () => {
+          changeDisplayMode();
+        });
+
+        function changeDisplayMode() {
+          let currentDisplay = body.getAttribute('class');
+          console.log(currentDisplay);
+          if (null === currentDisplay) {
+            body.setAttribute('class', 'dark_mode');
+          } else {
+            body.removeAttribute('class');
+          }
+        }
+    </script>
   </body>
 </html>

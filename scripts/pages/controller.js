@@ -1,7 +1,20 @@
+class Controller {
 // boss function - you(getPhotographers) fetch my data and you(showPhotographers) display it - acts as a controller
-async function displayPhotographers() {
-  let data = await getPhotographers();
-  showPhotographers(data);
-}
+  async displayPhotographers() {
+    let model = new Model();
+    let indexView = new View();
+    await model.initData();
+    let data = model.getPhotographers();
 
-displayPhotographers();
+    indexView.showPhotographers(data);
+  }
+  async displayPhotographerDetails() {
+    let model = new Model()
+    let photographerView = new PhotographerView();
+    await model.initData();
+    let photographerDetails = model.getPhotographerDetails();
+    let photographerMedia = model.getPhotographerMedia();
+
+    photographerView.showPhotographerDetails(photographerDetails, photographerMedia);
+  }
+}

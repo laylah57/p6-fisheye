@@ -1,4 +1,4 @@
-// Original Factory function from photographer.js
+// Original Factory function from photographerView.js
 function photographerFactory(data) {
     const { name, portrait } = data;
 
