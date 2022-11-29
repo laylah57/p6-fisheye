@@ -1,139 +1,145 @@
-//TODO: capital letter for each classes
+class Lightbox {
+  createLightbox(photographerMedia) {
+    // Storing the media elements in a table
+    let htmlLightboxDisplay = [];
+    let elementIdList = [];
 
-//TODO: later make a class out of this
-function createLightbox(idSelectedMedia) {
-  // Displaying the lightbox
-  this.displayLightbox();
+    // Catching the <a> elements wrapped around the media images and videos
+    let mediaNodeElementsList = document.querySelectorAll('.media_element');
+    let lightboxMediaElementId = '';
 
-  // Catching all the images and video created in createPhotographerView()
-  let listHtmlMedia = document.querySelectorAll('.lightbox_image > .media_element'); // returns an array
+    // Fetching the node element in which to display the content
+    const htmlLightboxContent = document.querySelector('.lightbox_content');
 
-  // Preparing an array to store all the elements' id numbers
-  let listMediaId = [];
+    // Creating lightbox display
+    for (let media of photographerMedia) {
+      // Declaring a variable to discriminate between video and image elements
+      let mediaAsset = String(Object.keys(media).filter(mediaAsset => mediaAsset === 'video' || mediaAsset === 'image'));
 
-  // Looping through the list of images and video elements from listHtmlMedia
-  for (let element of listHtmlMedia) {
-    // Filling in the array with the elements' id numbers
-    listMediaId.push(element.dataset.mediaId);
+      // Creating the variable to store results of the following if condition
+      let mediaHtml = '';
+
+      // Condition to create either an <img> or <video> element
+      if (mediaAsset === 'image') {
+        mediaHtml = `
+          <img
+            id="media_element_${media.id}"
+            class="media_element"
+            data-media-id="${media.id}"
+            src="assets/images/${media.image}"
+          />
+        `
+      } else {
+        mediaHtml = `
+          <video
+            id="media_element_${media.id}"
+            class="media_element"
+            data-media-id="${media.id}"
+            src="assets/images/${media.video}"
+            type="video/mp4"
+          />
+        `
+      }
+
+      // HTML ELEMENT
+      let htmlLightboxElement = `
+          <div id="lightbox_media_${media.id}" class="lightbox_element">
+              <div class="lightbox_image">
+                ${mediaHtml}
+              </div>
+          </div>
+      `
+      // Pushing each element in an array
+      lightboxMediaElementId = media.id;
+      elementIdList.push(lightboxMediaElementId);
+      htmlLightboxDisplay.push(htmlLightboxElement);
+
+      // Pushing each element in the HTML node wrapper
+      htmlLightboxContent.innerHTML += htmlLightboxElement;
+    }
+
+    // Preparing a variable to store the selected media ID
+    let sourceElementId = Number();
+
+    // Looping through the media displayed on the photographer view to listen to events
+    let arrowNext = document.getElementById(`arrow_next`);
+    let arrowPrevious = document.getElementById(`arrow_previous`);
+
+    for (let nodeElement of mediaNodeElementsList) {
+      nodeElement.addEventListener('click', (event) => {
+        // Storing the media ID number
+        sourceElementId = nodeElement.dataset.mediaId;
+        let i = elementIdList.findIndex(element => element == sourceElementId);
+        this.displayLightbox();
+        this.displaySelectedElement(sourceElementId);
+        arrowNext.addEventListener('click',()=> {
+          i++;
+          let nextElementId = elementIdList[i];
+          this.hideElements();
+          this.navigateElements(nextElementId, elementIdList);
+        })
+        arrowPrevious.addEventListener('click',()=> {
+          i--;
+          let previousElementId = elementIdList[i];
+          this.hideElements();
+          this.navigateElements(previousElementId, elementIdList);
+        })
+      })
+    }
+
+    // Getting DOM element to close lightbox and calling corresponding function
+    const closeButton = document.getElementById('close_button');
+    closeButton.addEventListener('click', (event) => {
+      this.closeLightbox()
+    })
   }
 
+  displayLightbox() {
+    // Displaying the lightbox modal background
+    const lightboxModal = document.getElementById('lightbox_modal');
+    lightboxModal.style.display = "block";
 
-  // Getting the selected media's Index
-  // let elementIndexNumber = listMediaId.findIndex(element => element == idSelectedMedia);
-  let i = listMediaId.findIndex(i => i == idSelectedMedia);
-  console.log(i);
+    // Displaying the lightbox in the modal
+    const lightbox = document.querySelector('.lightbox');
+    lightbox.setAttribute("style", "display:flex");
+  }
 
-  this.displayMediaElement(listMediaId[i], i, listMediaId.length);
+  displaySelectedElement(elementIdNumber) {
+    // Fetching the element to display by its id
+    let elementToDisplay = document.getElementById(`lightbox_media_${elementIdNumber}`);
+    elementToDisplay.setAttribute("style", "display:flex");
+  }
 
-  let arrowNext = this.document.getElementById(`arrow_next`);
-  let arrowPrevious = this.document.getElementById(`arrow_previous`);
+  navigateElements(idElementToDisplay, elementIdList) {
+    let elementToDisplay = document.getElementById(`lightbox_media_${idElementToDisplay}`);
+    elementToDisplay.setAttribute('style', 'display: flex');
 
-  arrowNext.addEventListener('click',()=> {
-    hideElements();
-    i++;
-    displayMediaElement(listMediaId[i], i, listMediaId.length);
-  });
+    let arrayLength = elementIdList.length;
+    let elementIndexNumber = elementIdList.findIndex(element => element == idElementToDisplay);
+    let arrowNext = document.getElementById(`arrow_next`);
+    let arrowPrevious = document.getElementById(`arrow_previous`);
+    if (0 === elementIndexNumber) {
+      arrowPrevious.setAttribute('style', 'display:none');
+    } else if (arrayLength - 1 === elementIndexNumber) {
+      arrowNext.setAttribute('style', 'display:none');
+    } else if (0 < elementIndexNumber && arrayLength - 1 !== elementIndexNumber) {
+      arrowPrevious.removeAttribute('style');
+      arrowNext.removeAttribute('style');
+    }
+  }
 
+  closeLightbox() {
+    const lightbox = document.getElementById('lightbox_modal');
+    lightbox.style.display = "none";
+    this.hideElements();
+  }
 
-  arrowPrevious.addEventListener('click',()=> {
-    hideElements();
-    i--;
-    displayMediaElement(listMediaId[i], i, listMediaId.length);
-  });
+  hideElements() {
+    let lightboxImage = document.querySelectorAll('.lightbox_element');
 
-
-}
-
-function displayLightbox() {
-  // Displaying the lightbox modal background
-  const lightboxModal = document.getElementById('lightbox_modal');
-  lightboxModal.style.display = "block";
-
-  // Displaying the lightbox in the modal
-  const lightbox = document.querySelector('.lightbox');
-  lightbox.setAttribute("style", "display:flex");
-}
-
-function displayMediaElement(elementIdNumber, elementIndexNumber, arrayLength) {
-  // Fetching the element to display by its id
-  let elementToDisplay = document.getElementById(`lightbox_media_${elementIdNumber}`);
-  // Making it visible
-  elementToDisplay.setAttribute("style", "display:flex");
-
-  let arrowNext = this.document.getElementById(`arrow_next`);
-  let arrowPrevious = this.document.getElementById(`arrow_previous`);
-
-  // TODO: think about replacing this with switch/case loop ?
-  if (0 === elementIndexNumber) {
-    arrowPrevious.setAttribute('style', 'display:none');
-  } else if (arrayLength - 1 === elementIndexNumber) {
-    arrowNext.setAttribute('style', 'display:none');
-  } else if (0 < elementIndexNumber && arrayLength - 1 !== elementIndexNumber) {
-    arrowPrevious.removeAttribute('style');
-    arrowNext.removeAttribute('style');
+    for (let element of lightboxImage) {
+      element.removeAttribute('style');
+    }
   }
 }
 
-//
-//   // Storing the element to display in a variable
-//   let idElementToDisplay = `lightbox_media_${idSelectedMedia}` // variable passed through displayLightbox() parameters
-//   // TODO: find a way to type it before calling findIndex)
-//   // Producing the Index number of the element to display to give it to the navigation function
-//   let indexElementToDisplay = listMediaId.findIndex(element=> element == idSelectedMedia);
-//
-//   // Fetching the element to display by its id
-//   let elementToDisplay = document.getElementById(idElementToDisplay);
-//   // Making it visible
-//   elementToDisplay.setAttribute("style", "display:flex");
-//
-//   const arrowNext = this.document.getElementById(`arrow_next_${idSelectedMedia}`);
-//   arrowNext.addEventListener('click',()=> {
-//     this.hideCurrentDisplay(idSelectedMedia);
-//     let indexNextElementToDisplay = this.showNextElement(listMediaId, indexElementToDisplay);
-//     this.showNextDisplay(indexNextElementToDisplay);
-//   });
-//
-//   const arrowPrevious = this.document.getElementById(`arrow_previous_${idSelectedMedia}`);
-//   arrowPrevious.addEventListener('click', () => {
-//     this.showPreviousElement(listMediaId, idSelectedMedia);
-//   });
-// }
-//
-// function showNextElement(listMediaId, currentElementIndex) {
-//   // Getting the next element's index in the array
-//   let nextElementIndex = currentElementIndex + 1;
-//   let nextElementId = listMediaId[nextElementIndex];
-//   return nextElementIndex;
-// }
-//
-// function showNextDisplay(displayId) {
-//   let idNextElementToDisplay = `lightbox_media_${displayId}`;
-//   let nextElementToDisplay = document.getElementById(idNextElementToDisplay);
-//   nextElementToDisplay.setAttribute('style', 'display: flex');
-// }
-//
-function hideElements() {
-  let lightboxImage = document.querySelectorAll('.lightbox_element');
-
-  for (let element of lightboxImage) {
-    element.removeAttribute('style');
-  }
-}
-//
-// function showPreviousElement(listMediaId, indexElementToDisplay) {
-// }
-//
-const closeButton = document.getElementById('close_button');
-closeButton.addEventListener('click', () => {
-  this.closeLightbox()
-})
-
-function  closeLightbox() {
-  const lightbox = document.getElementById('lightbox_modal');
-  lightbox.style.display = "none";
-  hideElements();
-}
-// TODO: send lightboxHtml here
-// TODO: attention pour addEventListenenrs utiliser fonction fléchées
-
-// in classes this.function tend to lose their scope

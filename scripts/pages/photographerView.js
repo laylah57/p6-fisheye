@@ -19,10 +19,11 @@ class PhotographerView {
     const htmlMediaCards = document.querySelector('.photographer_art_pieces');
     htmlMediaCards.innerHTML = mediaCard;
 
-    const htmlLightboxContent = document.querySelector('.lightbox_content');
-    // let lightbox = new Lightbox;
+
+
+    let lightbox = new Lightbox;
+    lightbox.createLightbox(photographerMedia);
     // lightbox.init(add event listener on existing media);
-    htmlLightboxContent.innerHTML = htmlContent.lightboxDisplay.join('');
 
     this.incrementLikesCount();
   }
@@ -83,7 +84,7 @@ class PhotographerView {
       // Creating the html for the media cards
       let htmlMediaCard = `
         <div class="image-slot">
-          <a onclick="createLightbox(${element.id})"> <!--// TODO: let lightbox new Lightbox...-->
+          <a class="lightbox_display"> 
             <div class="photographer-image">
               ${mediaHtml}
             </div>
@@ -99,34 +100,20 @@ class PhotographerView {
       `
       // Storing the media elements in a table
       htmlMediaCards.push(htmlMediaCard);
-
-      // Creating lightbox display
-      let htmlLightboxElement = `
-          <div id="lightbox_media_${element.id}" class="lightbox_element">
-              <div class="lightbox_image">
-                ${mediaHtml}
-              </div>
-          </div>
-      `
-      htmlLightboxDisplay.push(htmlLightboxElement);
     }
 
-    // Declare variable to store the entire HTML content to pass on to main class function
-    let totalHtml = {
-      headerInfo : htmlHeaderInfo,
-      headerThumbnail : htmlHeaderThumbnail,
-      mediaCards : htmlMediaCards,
+    // Returning total HTML result
+    return {
+      headerInfo: htmlHeaderInfo,
+      headerThumbnail: htmlHeaderThumbnail,
+      mediaCards: htmlMediaCards,
       lightboxDisplay: htmlLightboxDisplay,
     };
-
-    // Returning total HTML result
-    return totalHtml;
   }
 
   incrementLikesCount() {
     // Getting all the likes elements
     let likesNodesList = document.querySelectorAll('.likes');
-    console.log(likesNodesList);
     let likesNumberList = [];
     let totalLikesNumber = Number;
     for(let nodeElement of likesNodesList) {
