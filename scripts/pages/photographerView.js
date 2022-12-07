@@ -19,13 +19,29 @@ class PhotographerView {
     const htmlMediaCards = document.querySelector('.photographer_art_pieces');
     htmlMediaCards.innerHTML = mediaCard;
 
-
+    this.initializeTotalLikesNumber(htmlContent.likesNumberList);
 
     let lightbox = new Lightbox;
     lightbox.createLightbox(photographerMedia);
-    // lightbox.init(add event listener on existing media);
 
-    this.incrementLikesCount();
+    let mediaCardHearts = document.querySelectorAll('.heart');
+
+    for (let heartElement of mediaCardHearts) {
+      heartElement.addEventListener('click', (event) => {
+        this.incrementLikesCount(event);
+      });
+    }
+
+    let filterSelect = document.querySelector('.filter_select');
+    filterSelect.addEventListener('click', () => {
+      console.log('this.toggleSelect');
+    })
+    let filterOptions = document.querySelectorAll('.select_option');
+    for (let option of filterOptions) {
+      option.addEventListener('click', () => {
+        console.log(option.id);
+      })
+    }
   }
 
   createPhotographerView(photographer, media) {
@@ -49,37 +65,12 @@ class PhotographerView {
     // Creating variable to fill in with loop return values
     let htmlMediaCards = [];
     let htmlLightboxDisplay = [];
+    let likesNumberList = [];
 
     // Looping through the elements
     for (let element of media) {
-
       // Declaring a variable to discriminate between video and image elements
-      let mediaAsset = String(Object.keys(element).filter(mediaAsset => mediaAsset === 'video' || mediaAsset === 'image'));
-
-      // Creating the variable to store results of the following if condition
-      let mediaHtml = '';
-
-      // Condition to create either an <img> or <video> element
-      if (mediaAsset === 'image') {
-        mediaHtml = `
-          <img
-            id="media_element_${element.id}"
-            class="media_element"
-            data-media-id="${element.id}"
-            src="assets/images/${element.image}"
-          />
-        `
-      } else {
-        mediaHtml = `
-          <video
-            id="media_element_${element.id}"
-            class="media_element"
-            data-media-id="${element.id}"
-            src="assets/images/${element.video}"
-            type="video/mp4"
-          />
-        `
-      }
+      let mediaHtml = Factory.generateMediaTagFactory(element);
 
       // Creating the html for the media cards
       let htmlMediaCard = `
@@ -93,13 +84,14 @@ class PhotographerView {
             <div class="media-title">${element.title}</div>
             <div class="media-likes">
               <span id="likes_number_${element.id}" data-likes-id="${element.id}" class="likes">${element.likes}</span>
-              <span id="heart" class="heart"></span>
+              <span class="heart"></span>
             </div>
           </div>
         </div>
       `
       // Storing the media elements in a table
       htmlMediaCards.push(htmlMediaCard);
+      likesNumberList.push(element.likes);
     }
 
     // Returning total HTML result
@@ -108,48 +100,23 @@ class PhotographerView {
       headerThumbnail: htmlHeaderThumbnail,
       mediaCards: htmlMediaCards,
       lightboxDisplay: htmlLightboxDisplay,
+      likesNumberList: likesNumberList,
     };
   }
 
-  incrementLikesCount() {
-    // Getting all the likes elements
-    let likesNodesList = document.querySelectorAll('.likes');
-    let likesNumberList = [];
-    let totalLikesNumber = Number;
-    for(let nodeElement of likesNodesList) {
-      nodeElement.addEventListener('click', () => {
-        // Storing the return values of the function used to get the selected node's id and text content
-        let likesInformation = this.returnContent(nodeElement); // returns an object with node's id and text content
-        // Replacing the node element content with the return value of the increment function
-        nodeElement.innerHTML = this.incrementNumber(likesInformation.selectedLikesNumber);
-      })
-      // Storing each likes value in a table
-      let likesNumber = Number(nodeElement.textContent);
-      likesNumberList.push(likesNumber);
-      totalLikesNumber = likesNumberList.reduce(
-        (accumulator, currentValue) => accumulator + currentValue,
-      );
-    }
+  incrementLikesCount(event) {
+    let spanCount = event.target.parentNode.querySelector('.likes');
+    spanCount.innerHTML = parseInt(spanCount.innerHTML)+1;
+    let totalLikesCount = document.getElementById('total_likes_number');
+    totalLikesCount.innerHTML = parseInt(totalLikesCount.innerHTML)+1;
+  }
+
+  initializeTotalLikesNumber(likesNumberList) {
+    let totalLikesNumber = likesNumberList.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+    );
     let totalLikesHtmlDisplay = document.getElementById('total_likes_number');
-    return totalLikesHtmlDisplay.innerHTML = totalLikesNumber.toString();
-  }
-
-  incrementNumber(likesNumber) {
-    likesNumber ++;
-    return likesNumber;
-  }
-
-  returnContent(nodeElement) {
-    // Extracting the nodes dataset value to get the element's id
-    let selectedLikesNodeDatasetValue = nodeElement.dataset.likesId;
-    // Extracting the node's content to get likes number
-    let selectedLikesNumber = nodeElement.textContent;
-
-    // Storing the information in an object
-    return {
-      selectedLikesNodeId: selectedLikesNodeDatasetValue,
-      selectedLikesNumber: selectedLikesNumber,
-    };
+    totalLikesHtmlDisplay.innerHTML = totalLikesNumber.toString();
   }
 }
 

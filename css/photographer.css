@@ -320,6 +320,64 @@ input:focus-visible {
     object-position: top;
 }
 
-.dark_mode {
-    background-color: #312E2E;
+.arrow-left {
+    color: yellow;
+}
+
+.filters_wrapper {
+    margin: 50px 100px 0 100px;
+    display: flex;
+    align-items: baseline;
+}
+
+.filter_label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 40px;
+}
+
+.select_wrapper {
+    position: relative;
+    border-radius: 5px;
+    background-color: #901C1C;
+    font-style: inherit;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    z-index: 1;
+}
+
+.filter_select {
+    height: 60px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    font-weight: inherit;
+}
+
+.select_options {
+    padding: 0 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: inherit;
+    border-radius: inherit;
+    font-weight: inherit;
+}
+
+.select_option {
+    padding: 20px 0;
+}
+
+#date {
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+#filter_caret {
+    height: 16px;
+    width: 16px;
+    padding: 0 20px;
 }
