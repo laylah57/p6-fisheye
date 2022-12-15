@@ -47,7 +47,9 @@ class Model {
 
   sortMediaList() {
     let mediaElements = this.getPhotographerMedia(this.getPhotographerById());
-    let mediaSortedByTitle = mediaElements.sort((a, b) => {
+    let mediaSortedByTitle = [...mediaElements];
+
+    mediaSortedByTitle.sort((a, b) => {
         const titleA = a.title.toUpperCase();
         const titleB = b.title.toUpperCase();
         if (titleA < titleB) {
@@ -60,21 +62,28 @@ class Model {
       }
     );
 
+    let dateList = [];
+    for (let object of mediaElements ) {
+      let dateElement = new Date(object.date);
+      dateList.push(dateElement);
+    }
+
+    //TODO: not working
     let mediaSortedByDate = mediaElements.sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      console.log(dateA - dateB);
-      }
-    );
+      let dateA = new Date(a.date);
+      let dateB = new Date(b.date);
+
+      return dateA - dateB;
+    });
 
     let mediaSortedByPopularity = mediaElements.sort((a, b) => {
       const likesA = a.likes;
       const likesB = b.likes;
         if (likesA < likesB) {
-          return -1;
+          return 1;
         }
         if (likesA > likesB) {
-          return 1;
+          return -1;
         }
         return 0;
     });
@@ -84,7 +93,7 @@ class Model {
       sortedByPopularity : mediaSortedByPopularity,
       sortedByTitle : mediaSortedByTitle,
     }
-    console.log(mediaSortedByDate);
+    console.log(mediaSortedByFilter);
     return mediaSortedByFilter;
   }
 }

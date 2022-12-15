@@ -14,8 +14,8 @@ class Controller {
     await model.initData();
     let photographerDetails = model.getPhotographerDetails();
     let photographerMedia = model.getPhotographerMedia();
-    model.sortMediaList();
+    let filteredMedia = model.sortMediaList();
 
-    photographerView.showPhotographerDetails(photographerDetails, photographerMedia);
+    photographerView.showPhotographerDetails(photographerDetails, photographerMedia, filteredMedia);
   }
 }
