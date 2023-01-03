@@ -44,5 +44,57 @@ class Model {
     let currentPhotographer = this.getPhotographerById(); // TODO: rename currentPhotographer and getPhotographerById
     return mediaList.filter((mediaAuthor) => mediaAuthor.photographerId === currentPhotographer);
   }
+
+  sortMediaList() {
+    let mediaElements = this.getPhotographerMedia(this.getPhotographerById());
+    let mediaSortedByTitle = [...mediaElements];
+
+    mediaSortedByTitle.sort((a, b) => {
+        const titleA = a.title.toUpperCase();
+        const titleB = b.title.toUpperCase();
+        if (titleA < titleB) {
+          return -1;
+        }
+        if (titleA > titleB) {
+          return 1;
+        }
+        return 0;
+      }
+    );
+
+    let dateList = [];
+    for (let object of mediaElements ) {
+      let dateElement = new Date(object.date);
+      dateList.push(dateElement);
+    }
+
+    //TODO: not working
+    let mediaSortedByDate = mediaElements.sort((a, b) => {
+      let dateA = new Date(a.date);
+      let dateB = new Date(b.date);
+
+      return dateA - dateB;
+    });
+
+    let mediaSortedByPopularity = mediaElements.sort((a, b) => {
+      const likesA = a.likes;
+      const likesB = b.likes;
+        if (likesA < likesB) {
+          return 1;
+        }
+        if (likesA > likesB) {
+          return -1;
+        }
+        return 0;
+    });
+
+    let mediaSortedByFilter = {
+      sortedByDate : mediaSortedByDate,
+      sortedByPopularity : mediaSortedByPopularity,
+      sortedByTitle : mediaSortedByTitle,
+    }
+    console.log(mediaSortedByFilter);
+    return mediaSortedByFilter;
+  }
 }
 

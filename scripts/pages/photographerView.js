@@ -1,6 +1,18 @@
 class PhotographerView {
-  showPhotographerDetails(photographerDetails, photographerMedia) {
-    let htmlContent = this.createPhotographerView(photographerDetails, photographerMedia);
+  showPhotographerDetails(photographerDetails, photographerMedia, filteredMedia) {
+
+    // console.log(currentOption.dataset.mediaFilter);
+    //
+    // if (undefined === currentOption.dataset.mediaFilter) {
+    //   mediaDisplayOrder = photographerDetails;
+    // }
+    //
+    // if ('popularity' === currentOption.dataset.mediaFilter) {
+    //   console.log('hi');
+    // }
+
+    this.selectOption(filteredMedia);
+    let htmlContent = this.createPhotographerView(photographerDetails, photographerMedia, filteredMedia);
 
     const htmlHeaderInfo = document.querySelector('.photographer_info');
     htmlHeaderInfo.innerHTML = htmlContent.headerInfo;
@@ -10,25 +22,23 @@ class PhotographerView {
 
     // TODO: see if I can return this directly from the function
     // Creating variable to store each element of the mediaCards table
-    let mediaCard = '';
+    this.displayMediaCard(htmlContent.mediaCards);
 
-    for (let element of htmlContent.mediaCards) {
-      mediaCard += element;
-    }
-
-    const htmlMediaCards = document.querySelector('.photographer_art_pieces');
-    htmlMediaCards.innerHTML = mediaCard;
-
-
+    this.initializeTotalLikesNumber(htmlContent.likesNumberList);
 
     let lightbox = new Lightbox;
     lightbox.createLightbox(photographerMedia);
-    // lightbox.init(add event listener on existing media);
 
-    this.incrementLikesCount();
+    let mediaCardHearts = document.querySelectorAll('.heart');
+
+    for (let heartElement of mediaCardHearts) {
+      heartElement.addEventListener('click', (event) => {
+        this.incrementLikesCount(event);
+      });
+    }
   }
 
-  createPhotographerView(photographer, media) {
+  createPhotographerView(photographer, media, filteredMedia) {
     // Creating header photographer info and image thumbnail:
     let htmlHeaderInfo = `
        <h1>${photographer.name}</h1>
@@ -47,39 +57,136 @@ class PhotographerView {
 
     // Creating image and video cards (mediaCard) by looping through media data
     // Creating variable to fill in with loop return values
-    let htmlMediaCards = [];
+
     let htmlLightboxDisplay = [];
+    this.toggleFilterOptions();
+    // // Looping through the elements
+    // for (let element of media) {
+    //   // Declaring a variable to discriminate between video and image elements
+    //   let mediaHtml = Factory.generateMediaTagFactory(element);
+    //
+    //   // Creating the html for the media cards
+    //   let htmlMediaCard = `
+    //     <div class="image-slot">
+    //       <a class="lightbox_display">
+    //         <div class="photographer-image">
+    //           ${mediaHtml}
+    //         </div>
+    //       </a>
+    //       <div class="media-caption">
+    //         <div class="media-title">${element.title}</div>
+    //         <div class="media-likes">
+    //           <span id="likes_number_${element.id}" data-likes-id="${element.id}" class="likes">${element.likes}</span>
+    //           <span class="heart"></span>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   `
+    //   // Storing the media elements in a table
+    //   htmlMediaCards.push(htmlMediaCard);
+    //   likesNumberList.push(element.likes);
+    // }
+    let cardObject = this.createHtmlMediaCards(filteredMedia.sortedByPopularity);
 
-    // Looping through the elements
-    for (let element of media) {
+    // Returning total HTML result
+    return {
+      headerInfo: htmlHeaderInfo,
+      headerThumbnail: htmlHeaderThumbnail,
+      mediaCards: cardObject.htmlMediaCards,
+      lightboxDisplay: htmlLightboxDisplay,
+      likesNumberList: cardObject.likesNumberList,
+    };
+  }
 
-      // Declaring a variable to discriminate between video and image elements
-      let mediaAsset = String(Object.keys(element).filter(mediaAsset => mediaAsset === 'video' || mediaAsset === 'image'));
+  incrementLikesCount(event) {
+    let spanCount = event.target.parentNode.querySelector('.likes');
+    spanCount.innerHTML = parseInt(spanCount.innerHTML)+1;
+    let totalLikesCount = document.getElementById('total_likes_number');
+    totalLikesCount.innerHTML = parseInt(totalLikesCount.innerHTML)+1;
+  }
 
-      // Creating the variable to store results of the following if condition
-      let mediaHtml = '';
+  initializeTotalLikesNumber(likesNumberList) {
+    let totalLikesNumber = likesNumberList.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+    );
+    let totalLikesHtmlDisplay = document.getElementById('total_likes_number');
+    totalLikesHtmlDisplay.innerHTML = totalLikesNumber.toString();
+  }
 
-      // Condition to create either an <img> or <video> element
-      if (mediaAsset === 'image') {
-        mediaHtml = `
-          <img
-            id="media_element_${element.id}"
-            class="media_element"
-            data-media-id="${element.id}"
-            src="assets/images/${element.image}"
-          />
-        `
+  toggleFilterOptions() {
+    let filterToggle = document.getElementById('filter_caret');
+    let filterSelect = document.querySelector('.select_options');
+    let filterOptions = document.querySelectorAll('.select_option');
+    filterToggle.addEventListener('click', () => {
+      if (!filterToggle.hasAttribute('style')) {
+        filterToggle.setAttribute('style', 'rotate:180deg');
+        filterSelect.setAttribute('style', 'height:inherit')
+        for (let divElement of filterOptions) {
+          divElement.setAttribute('style', 'display:block')
+        }
       } else {
-        mediaHtml = `
-          <video
-            id="media_element_${element.id}"
-            class="media_element"
-            data-media-id="${element.id}"
-            src="assets/images/${element.video}"
-            type="video/mp4"
-          />
-        `
+        filterToggle.removeAttribute('style');
+        filterSelect.removeAttribute('style');
+        for (let divElement of filterOptions) {
+          divElement.removeAttribute('style');
+        }
       }
+    })
+  }
+
+  selectOption(filteredMedia) {
+    let filterSelect = document.querySelector('.select_options');
+    let filterOptions = document.querySelectorAll('.select_option');
+    let filterToggle = document.getElementById('filter_caret');
+    let popularity = document.getElementById('popularity');
+    let date = document.getElementById('date');
+    let title = document.getElementById('title');
+    let currentOption = document.getElementById('current_option');
+
+    let selectedFilter = undefined;
+
+    popularity.addEventListener('click', (event) => {
+      currentOption.innerHTML = 'Popularité';
+      filterSelect.removeAttribute('style');
+      filterToggle.removeAttribute('style');
+      for (let divElement of filterOptions) {
+        divElement.removeAttribute('style');
+      }
+      let cardObject = this.createHtmlMediaCards(filteredMedia.sortedByPopularity);
+      this.displayMediaCard(cardObject.htmlMediaCards);
+    })
+    date.addEventListener('click', () => {
+      currentOption.innerHTML = 'Date';
+      filterSelect.removeAttribute('style');
+      filterToggle.removeAttribute('style');
+      for (let divElement of filterOptions) {
+        divElement.removeAttribute('style');
+      }
+      let cardObject = this.createHtmlMediaCards(filteredMedia.sortedByDate);
+      this.displayMediaCard(cardObject.htmlMediaCards);
+    })
+    title.addEventListener('click', () => {
+      currentOption.innerHTML = 'Titre';
+      filterSelect.removeAttribute('style');
+      filterToggle.removeAttribute('style');
+      for (let divElement of filterOptions) {
+        divElement.removeAttribute('style');
+      }
+      let cardObject = this.createHtmlMediaCards(filteredMedia.sortedByTitle);
+      this.displayMediaCard(cardObject.htmlMediaCards);
+    })
+    // console.log(selectedFilter);
+    // return selectedFilter;
+  }
+
+  createHtmlMediaCards(media) {
+    console.log(media);
+    let htmlMediaCards = [];
+    let likesNumberList = [];
+
+    for (let element of media) {
+      // Declaring a variable to discriminate between video and image elements
+      let mediaHtml = Factory.generateMediaTagFactory(element);
 
       // Creating the html for the media cards
       let htmlMediaCard = `
@@ -93,63 +200,30 @@ class PhotographerView {
             <div class="media-title">${element.title}</div>
             <div class="media-likes">
               <span id="likes_number_${element.id}" data-likes-id="${element.id}" class="likes">${element.likes}</span>
-              <span id="heart" class="heart"></span>
+              <span class="heart"></span>
             </div>
           </div>
         </div>
       `
       // Storing the media elements in a table
       htmlMediaCards.push(htmlMediaCard);
+      likesNumberList.push(element.likes);
     }
-
-    // Returning total HTML result
     return {
-      headerInfo: htmlHeaderInfo,
-      headerThumbnail: htmlHeaderThumbnail,
-      mediaCards: htmlMediaCards,
-      lightboxDisplay: htmlLightboxDisplay,
+      htmlMediaCards : htmlMediaCards,
+      likesNumberList : likesNumberList,
     };
   }
 
-  incrementLikesCount() {
-    // Getting all the likes elements
-    let likesNodesList = document.querySelectorAll('.likes');
-    let likesNumberList = [];
-    let totalLikesNumber = Number;
-    for(let nodeElement of likesNodesList) {
-      nodeElement.addEventListener('click', () => {
-        // Storing the return values of the function used to get the selected node's id and text content
-        let likesInformation = this.returnContent(nodeElement); // returns an object with node's id and text content
-        // Replacing the node element content with the return value of the increment function
-        nodeElement.innerHTML = this.incrementNumber(likesInformation.selectedLikesNumber);
-      })
-      // Storing each likes value in a table
-      let likesNumber = Number(nodeElement.textContent);
-      likesNumberList.push(likesNumber);
-      totalLikesNumber = likesNumberList.reduce(
-        (accumulator, currentValue) => accumulator + currentValue,
-      );
+  displayMediaCard(mediaCards) {
+    let mediaCard = '';
+
+    for (let element of mediaCards) {
+      mediaCard += element;
     }
-    let totalLikesHtmlDisplay = document.getElementById('total_likes_number');
-    return totalLikesHtmlDisplay.innerHTML = totalLikesNumber.toString();
-  }
 
-  incrementNumber(likesNumber) {
-    likesNumber ++;
-    return likesNumber;
-  }
-
-  returnContent(nodeElement) {
-    // Extracting the nodes dataset value to get the element's id
-    let selectedLikesNodeDatasetValue = nodeElement.dataset.likesId;
-    // Extracting the node's content to get likes number
-    let selectedLikesNumber = nodeElement.textContent;
-
-    // Storing the information in an object
-    return {
-      selectedLikesNodeId: selectedLikesNodeDatasetValue,
-      selectedLikesNumber: selectedLikesNumber,
-    };
+    const htmlMediaCards = document.querySelector('.photographer_art_pieces');
+    htmlMediaCards.innerHTML = mediaCard;
   }
 }
 

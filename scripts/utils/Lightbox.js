@@ -13,33 +13,7 @@ class Lightbox {
 
     // Creating lightbox display
     for (let media of photographerMedia) {
-      // Declaring a variable to discriminate between video and image elements
-      let mediaAsset = String(Object.keys(media).filter(mediaAsset => mediaAsset === 'video' || mediaAsset === 'image'));
-
-      // Creating the variable to store results of the following if condition
-      let mediaHtml = '';
-
-      // Condition to create either an <img> or <video> element
-      if (mediaAsset === 'image') {
-        mediaHtml = `
-          <img
-            id="media_element_${media.id}"
-            class="media_element"
-            data-media-id="${media.id}"
-            src="assets/images/${media.image}"
-          />
-        `
-      } else {
-        mediaHtml = `
-          <video
-            id="media_element_${media.id}"
-            class="media_element"
-            data-media-id="${media.id}"
-            src="assets/images/${media.video}"
-            type="video/mp4"
-          />
-        `
-      }
+      let mediaHtml = Factory.generateMediaTagFactory(media);
 
       // HTML ELEMENT
       let htmlLightboxElement = `
