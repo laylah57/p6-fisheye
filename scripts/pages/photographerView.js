@@ -1,16 +1,5 @@
 class PhotographerView {
   showPhotographerDetails(photographerDetails, photographerMedia, filteredMedia) {
-
-    // console.log(currentOption.dataset.mediaFilter);
-    //
-    // if (undefined === currentOption.dataset.mediaFilter) {
-    //   mediaDisplayOrder = photographerDetails;
-    // }
-    //
-    // if ('popularity' === currentOption.dataset.mediaFilter) {
-    //   console.log('hi');
-    // }
-
     this.selectOption(filteredMedia);
     let htmlContent = this.createPhotographerView(photographerDetails, photographerMedia, filteredMedia);
 
@@ -60,32 +49,6 @@ class PhotographerView {
 
     let htmlLightboxDisplay = [];
     this.toggleFilterOptions();
-    // // Looping through the elements
-    // for (let element of media) {
-    //   // Declaring a variable to discriminate between video and image elements
-    //   let mediaHtml = Factory.generateMediaTagFactory(element);
-    //
-    //   // Creating the html for the media cards
-    //   let htmlMediaCard = `
-    //     <div class="image-slot">
-    //       <a class="lightbox_display">
-    //         <div class="photographer-image">
-    //           ${mediaHtml}
-    //         </div>
-    //       </a>
-    //       <div class="media-caption">
-    //         <div class="media-title">${element.title}</div>
-    //         <div class="media-likes">
-    //           <span id="likes_number_${element.id}" data-likes-id="${element.id}" class="likes">${element.likes}</span>
-    //           <span class="heart"></span>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   `
-    //   // Storing the media elements in a table
-    //   htmlMediaCards.push(htmlMediaCard);
-    //   likesNumberList.push(element.likes);
-    // }
     let cardObject = this.createHtmlMediaCards(filteredMedia.sortedByPopularity);
 
     // Returning total HTML result
@@ -143,6 +106,7 @@ class PhotographerView {
     let title = document.getElementById('title');
     let currentOption = document.getElementById('current_option');
 
+    // TODO: remove if not used
     let selectedFilter = undefined;
 
     popularity.addEventListener('click', (event) => {
@@ -175,8 +139,6 @@ class PhotographerView {
       let cardObject = this.createHtmlMediaCards(filteredMedia.sortedByTitle);
       this.displayMediaCard(cardObject.htmlMediaCards);
     })
-    // console.log(selectedFilter);
-    // return selectedFilter;
   }
 
   createHtmlMediaCards(media) {
@@ -226,4 +188,3 @@ class PhotographerView {
     htmlMediaCards.innerHTML = mediaCard;
   }
 }
-

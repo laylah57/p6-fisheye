@@ -3,7 +3,7 @@
 }
 
 .photographer-header {
-    background-color: #000000;
+    background-color: #FAFAFA;
     height: 300px;
     margin: 0 100px;
     display: flex;
@@ -123,12 +123,11 @@
 .modal {
     border-radius: 5px;
     background-color: #DB8876;
-    width: 40%;
+    width: 30vh;
+    height: 80vh;
     bottom: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
     padding: 35px;
     margin: auto;
 }
@@ -358,7 +357,7 @@ input:focus-visible {
 }
 
 .select_options {
-    padding: 0 20px;
+    padding: 0;
     position: absolute;
     top: 0;
     left: 0;
@@ -371,19 +370,18 @@ input:focus-visible {
 }
 
 .select_option {
-    padding: 20px 0;
+    padding: 20px;
     display: none;
-    transition: display 400ms ease-in-out;
+    transition: display 400ms ease-in-out, background-color 200ms ease-in-out;
+}
+
+.select_option:hover {
+    background-color: rgba(56, 11, 11, 0.3);
 }
 
 .select_option > p {
     cursor: pointer;
     margin: 0;
-    transition: scale 200ms ease-in-out;
-}
-
-.select_option > p:hover {
-    transform: scale(1.025);
 }
 
 #date {

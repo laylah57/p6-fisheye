@@ -3,7 +3,6 @@
 body {
   font-family: "DM Sans", sans-serif;
   margin: 0;
-  background-color: #312E2E;
 }
 
 header {
@@ -43,14 +42,17 @@ h1 {
   color: #D3573C;
   font-size: 36px;
   margin-bottom: 0;
+  text-align: center;
 }
 
 .photographer_thumbnail {
+  margin: auto;
   height: 200px;
   width: 200px;
   display: flex;
   border-radius: 50%;
   overflow: hidden;
+  justify-content: center;
 }
 
 .photographer_thumbnail > img {
@@ -75,4 +77,5 @@ h1 {
 .stretched-link {
   text-decoration: none;
   color: black;
+  text-align: center;
 }

@@ -48,6 +48,7 @@ class Model {
   sortMediaList() {
     let mediaElements = this.getPhotographerMedia(this.getPhotographerById());
     let mediaSortedByTitle = [...mediaElements];
+    let mediaSortedByDate = [...mediaElements];
 
     mediaSortedByTitle.sort((a, b) => {
         const titleA = a.title.toUpperCase();
@@ -62,14 +63,7 @@ class Model {
       }
     );
 
-    let dateList = [];
-    for (let object of mediaElements ) {
-      let dateElement = new Date(object.date);
-      dateList.push(dateElement);
-    }
-
-    //TODO: not working
-    let mediaSortedByDate = mediaElements.sort((a, b) => {
+    mediaSortedByDate.sort((a, b) => {
       let dateA = new Date(a.date);
       let dateB = new Date(b.date);
 
